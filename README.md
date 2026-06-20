@@ -324,16 +324,21 @@ Rolling Update via Nginx
 
 ## 📸 Screenshots
 
-Add screenshots here:
+## Dashboard
 
-* Dashboard
-* Grafana
-* Prometheus
-* Swagger Docs
+![Dashboard](docs/screenshots/dashboard.png)
 
-```text
-docs/screenshots/
-```
+## Grafana Dashboard
+
+![Grafana](docs/screenshots/grafana.png)
+
+## Prometheus Dashboard
+
+![Prometheus](docs/screenshots/prometheus.png)
+
+## Swagger API Docs
+
+![Swagger](docs/screenshots/swagger.png)
 
 ---
 
