@@ -1,0 +1,56 @@
+# Environment
+
+.env
+.env.*
+!.env.example
+
+# Virtual Environment
+
+.venv/
+venv/
+
+# Python
+
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+
+# Testing
+
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Linting
+
+.ruff_cache/
+
+# Node.js
+
+node_modules/
+dist/
+
+# IDE
+
+.vscode/
+.idea/
+
+# OS Files
+
+.DS_Store
+Thumbs.db
+
+# Logs
+
+*.log
+
+# Grafana / Prometheus
+
+grafana_data/
+prometheus_data/
+
+# Misc
+
+*.tar
