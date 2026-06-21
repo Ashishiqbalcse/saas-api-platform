@@ -3,8 +3,6 @@ from __future__ import annotations
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import func, select
-from alembic import command
-from alembic.config import Config
 
 from app.api import keys, tenants, your_api
 from app.auth.middleware import AuthMiddleware
@@ -34,16 +32,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.on_event("startup")
-async def run_migrations() -> None:
-    try:
-        alembic_cfg = Config("alembic.ini")
-        command.upgrade(alembic_cfg, "head")
-        print("Database migrations applied")
-    except Exception as e:
-        print(f"Migration failed: {e}")
 
 
 @app.on_event("shutdown")
