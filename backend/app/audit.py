@@ -18,3 +18,11 @@ async def write_audit_log(
             event_data=event_data,
         )
     )
+
+    db.add(
+    AuditLog(
+        tenant_id=tenant_id,
+        event_type=event_type,
+        event_data=event_data,
+    )
+)

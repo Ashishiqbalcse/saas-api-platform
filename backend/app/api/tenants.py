@@ -1,4 +1,5 @@
 from __future__ import annotations
+from app.db.database import allow_api_key_lookup
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
@@ -38,6 +39,9 @@ async def register_tenant(req: TenantRegisterRequest, db: AsyncSession = Depends
     tenant = Tenant(name=req.name, email=str(req.email), plan="free", payment_status="active")
     db.add(tenant)
     await db.flush()
+
+    await allow_api_key_lookup(db)
+    
     db.add(
         ApiKey(
             tenant_id=tenant.id,
