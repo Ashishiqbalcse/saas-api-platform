@@ -28,7 +28,7 @@ export default function Dashboard() {
       })
       .catch(() => {
   setSummary({
-    tenant_name: "Demo Tenant",
+    tenant_name: "SaaS API Platform Analytics",
     today_requests: 1247,
     daily_limit: null,
     resets_in: 86400,
