@@ -15,21 +15,8 @@ const TABS = [
 
 export default function App() {
   const [tab, setTab] = useState("dashboard");
-  const [apiKey, setApiKey] = useState(localStorage.getItem("api_key") || "");
-  const [keyInput, setKeyInput] = useState("");
+  const [apiKey] = useState("demo-mode");
   const [summary, setSummary] = useState(null);
-  const [setupError, setSetupError] = useState(null);
-  const [verifying, setVerifying] = useState(false);
-
-  useEffect(() => {
-    const onUnauthorized = () => {
-      setApiKey("");
-      setSummary(null);
-      setSetupError("Your API key is invalid or has been revoked.");
-    };
-    window.addEventListener("api:unauthorized", onUnauthorized);
-    return () => window.removeEventListener("api:unauthorized", onUnauthorized);
-  }, []);
 
   useEffect(() => {
     if (!apiKey) return;
@@ -54,45 +41,6 @@ export default function App() {
     }
   }
 
-  function handleLogout() {
-    localStorage.removeItem("api_key");
-    setApiKey("");
-    setSummary(null);
-  }
-
-  if (!apiKey) {
-    return (
-      <main className="setup-shell">
-        <section className="setup-panel" aria-label="API key setup">
-          <div className="brand-row">
-            <div className="brand-mark">S</div>
-            <div>
-              <h1>SaaS API Platform</h1>
-              <p>Enter an API key to open the developer dashboard.</p>
-            </div>
-          </div>
-
-          {setupError && <div className="alert alert-danger">{setupError}</div>}
-
-          <form className="stack" onSubmit={handleKeySubmit}>
-            <label htmlFor="api-key">API key</label>
-            <input
-              id="api-key"
-              value={keyInput}
-              onChange={(event) => setKeyInput(event.target.value)}
-              placeholder="sk_live_..."
-              autoFocus
-              disabled={verifying}
-            />
-            <button className="primary-button" type="submit" disabled={verifying || !keyInput.trim()}>
-              <KeyRound size={16} />
-              {verifying ? "Verifying..." : "Sign in"}
-            </button>
-          </form>
-        </section>
-      </main>
-    );
-  }
 
   return (
     <main className="app-shell">
