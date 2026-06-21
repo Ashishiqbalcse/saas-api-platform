@@ -44,35 +44,21 @@ export default function Billing() {
   const currentPlan = summary?.plan || "free";
 
   useEffect(() => {
-    api.get("/api/usage/summary")
-      .then((response) => setSummary(response.data))
-      .catch((err) => setError(err.friendlyMessage || "Failed to load billing status."))
-      .finally(() => setLoading(false));
-  }, []);
+  setSummary({
+    plan: "pro",
+    tenant_name: "SaaS API Platform Analytics"
+  });
+
+  setLoading(false);
+}, []);
 
   async function startCheckout(plan) {
-    setBusyPlan(plan);
-    setError(null);
-    try {
-      const { data } = await api.post("/api/billing/checkout", { plan });
-      window.location.href = data.checkout_url;
-    } catch (err) {
-      setError(err.friendlyMessage || err.response?.data?.detail || "Could not start checkout.");
-      setBusyPlan(null);
-    }
-  }
+  alert(`Demo Mode: Upgrading to ${plan.toUpperCase()} plan`);
+}
 
   async function openPortal() {
-    setBusyPlan("portal");
-    setError(null);
-    try {
-      const { data } = await api.post("/api/billing/portal");
-      window.location.href = data.portal_url;
-    } catch (err) {
-      setError(err.friendlyMessage || "Could not open the billing portal.");
-      setBusyPlan(null);
-    }
-  }
+  alert("Demo Mode: Billing Portal");
+}
 
   return (
     <section className="page-stack">

@@ -17,46 +17,44 @@ export default function ApiKeys() {
   }, []);
 
   async function fetchKeys() {
-    setLoading(true);
-    try {
-      const { data } = await api.get("/api/keys");
-      setKeys(data);
-    } catch (err) {
-      setError(err.friendlyMessage || "Failed to load API keys.");
-    } finally {
-      setLoading(false);
-    }
-  }
+  setLoading(true);
+
+  setTimeout(() => {
+    setKeys([
+      {
+        id: "1",
+        name: "Production Server",
+        prefix: "sk_live_xLWuTtNQgD",
+        created_at: "2026-06-21",
+        is_active: true
+      },
+      {
+        id: "2",
+        name: "Analytics Service",
+        prefix: "sk_live_A7kLmP92Qa",
+        created_at: "2026-06-20",
+        is_active: true
+      }
+    ]);
+
+    setLoading(false);
+  }, 500);
+}
 
   async function handleCreate(event) {
-    event.preventDefault();
-    if (!newName.trim()) return;
-    setCreating(true);
-    setError(null);
-    setRevealedKey(null);
-    try {
-      const { data } = await api.post("/api/keys", { name: newName.trim() });
-      setRevealedKey(data.key);
-      setNewName("");
-      await fetchKeys();
-    } catch (err) {
-      setError(err.friendlyMessage || err.response?.data?.detail || "Failed to create API key.");
-    } finally {
-      setCreating(false);
-    }
-  }
+  event.preventDefault();
+
+  setRevealedKey(
+    "sk_live_demo_" +
+    Math.random().toString(36).substring(2, 20)
+  );
+
+  setNewName("");
+}
 
   async function handleRevoke(keyId) {
-    if (!window.confirm("Revoke this key? Applications using it will stop working immediately.")) {
-      return;
-    }
-    try {
-      await api.delete(`/api/keys/${keyId}`);
-      setKeys((prev) => prev.filter((key) => key.id !== keyId));
-    } catch (err) {
-      setError(err.friendlyMessage || "Failed to revoke API key.");
-    }
-  }
+  setKeys((prev) => prev.filter((key) => key.id !== keyId));
+}
 
   async function copyNewKey() {
     await navigator.clipboard.writeText(revealedKey);
