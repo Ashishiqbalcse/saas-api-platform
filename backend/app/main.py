@@ -3,6 +3,8 @@ from __future__ import annotations
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import func, select
+from alembic import command
+from alembic.config import Config
 
 from app.api import keys, tenants, your_api
 from app.auth.middleware import AuthMiddleware
@@ -35,13 +37,13 @@ app.add_middleware(
 
 
 @app.on_event("startup")
-async def update_active_tenant_metric() -> None:
+async def run_migrations() -> None:
     try:
-        async with async_session_maker() as db:
-            result = await db.execute(select(func.count(Tenant.id)))
-            ACTIVE_TENANTS.set(int(result.scalar() or 0))
-    except Exception:
-        ACTIVE_TENANTS.set(0)
+        alembic_cfg = Config("alembic.ini")
+        command.upgrade(alembic_cfg, "head")
+        print("Database migrations applied")
+    except Exception as e:
+        print(f"Migration failed: {e}")
 
 
 @app.on_event("shutdown")
